@@ -12,7 +12,7 @@ import (
 
 var (
 	addr     *string
-	listener *net.UDPConn
+	Listener *net.UDPConn
 	Timeout  time.Duration = time.Millisecond
 )
 
@@ -28,14 +28,14 @@ func start(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	listener, err = net.ListenUDP("udp", resAddr)
+	Listener, err = net.ListenUDP("udp", resAddr)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func stop(t *testing.T) {
-	if err := listener.Close(); err != nil {
+	if err := Listener.Close(); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -49,8 +49,8 @@ func getMessage(t *testing.T, body fn) string {
 	message := make([]byte, 1024*32)
 	var bufLen int
 	for {
-		listener.SetReadDeadline(time.Now().Add(Timeout))
-		n, _, _ := listener.ReadFrom(message[bufLen:])
+		Listener.SetReadDeadline(time.Now().Add(Timeout))
+		n, _, _ := Listener.ReadFrom(message[bufLen:])
 		if n == 0 {
 			break
 		} else {
